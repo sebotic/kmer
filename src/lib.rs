@@ -1,4 +1,5 @@
-use hashbrown::{HashMap, HashSet};
+//use hashbrown::{HashMap, HashSet};
+use std::collections::HashMap;
 use pyo3::prelude::*;
 use rayon::prelude::*;
 
@@ -7,7 +8,7 @@ fn kmer(_py: Python, m: &PyModule) -> PyResult<()> {
     println!("Successfully loaded kmer Rust module");
 
     #[pyfn(m)]
-    fn calculate_kmers(_py: Python, l: &str, length: usize) -> PyResult<Vec<usize>> {
+    fn calculate_kmers(_py: Python, l: &str, length: usize) -> PyResult<(Vec<usize>, HashMap<String, usize>)> {
         let out = gen_kmers(&l, length);
         Ok(out)
     }
@@ -15,7 +16,7 @@ fn kmer(_py: Python, m: &PyModule) -> PyResult<()> {
     Ok(())
 }
 
-fn gen_kmers(msa: &str, kmer_len: usize) -> Vec<usize> {
+fn gen_kmers(msa: &str, kmer_len: usize) -> (Vec<usize>, HashMap<String, usize>) {
     let characters: Vec<&str> = vec!["A", "C", "G", "T"];
 
     let combinations: Vec<_> = (2..kmer_len).fold(
@@ -65,5 +66,5 @@ fn gen_kmers(msa: &str, kmer_len: usize) -> Vec<usize> {
         }
     }
 
-    counts
+    (counts, kmer_index_map.into_iter().map(|(k, v)| (String::from(k), v) ).collect::<HashMap<String, usize>>())
 }
