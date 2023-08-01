@@ -5,11 +5,11 @@ Python 3 module relies on Rust for the heavy lifting, including
 usage of multiple threads. 
 
 As a convenient build tool, I used [maturin](https://www.maturin.rs/). So just [create a
-virtual env](https://docs.python.org/3/library/venv.html) , install maturin and maturin will just install the
+virtual env](https://docs.python.org/3/library/venv.html) , install maturin and maturin will install the
 kmers module into your virtual env, like so:
 
 ```bash
-$ git checkout https://github.com/sebotic/kmer.git
+$ git clone https://github.com/sebotic/kmer.git
 $ cd kmer
 $ maturin develop
 ```
